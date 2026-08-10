@@ -1,0 +1,136 @@
+// ====== Página "Our Location" ======
+// el mapa en el .fig SI es full-bleed (el frame "Maps" mide exactamente
+// 1440px, igual al ancho total de referencia) -- a diferencia del hero,
+// no tiene un margen derecho incorporado, asi que lo dejo sin tope de
+// ancho (queda de borde a borde a proposito).
+.map {
+  position: relative;
+  background-color: $black;
+}
+
+.map__img {
+  width: 100%;
+  // aspect-ratio real de cada foto (mobile vs desktop/tablet) para que
+  // object-fit:cover nunca recorte de mas y el pin no se desalinee al
+  // crecer la ventana.
+  aspect-ratio: 750 / 1100;
+  object-fit: cover;
+  display: block;
+
+  @include tablet {
+    aspect-ratio: 1600 / 666;
+  }
+}
+
+// envuelve el boton en un .container real (misma regla de max-width +
+// margin:auto + padding que usa el resto de la pagina) para que quede
+// alineado con el heading y el footer de mas abajo, en vez de pegado
+// al borde de la ventana. Segun el archivo .fig original el boton va
+// pegado arriba del todo (sin margen superior) en las 3 resoluciones,
+// y en mobile va pegado tambien al borde izquierdo.
+.map__back-row {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  // en mobile el boton va pegado al borde (sin el padding del .container).
+  // en tablet/desktop el .fig lo alinea con el resto del contenido, asi que
+  // hay que restaurar el padding normal del .container (si no, la regla de
+  // abajo -sin media query- lo pisaria tambien ahi por venir despues en el
+  // orden de cascada).
+  padding-left: 0;
+
+  @include tablet {
+    padding-left: 2.5rem;
+  }
+
+  @include desktop {
+    padding-left: 5rem;
+  }
+}
+
+.address {
+  background-color: $black;
+  color: $white;
+  padding: 3rem 0;
+
+  @include tablet {
+    padding: 4rem 0;
+  }
+
+  @include desktop {
+    // valor exacto del .fig (Desktop - Location): 104px arriba / 128px
+    // abajo (no 88px simetrico) -- la seccion negra quedaba mas chica de
+    // lo debido.
+    padding: 6.5rem 0 8rem;
+  }
+}
+
+.address__inner {
+  // antes usaba flex+gap: el heading y el bloque de direccion se
+  // achicaban a su propio contenido, dejando un hueco desparejo en vez
+  // del reparto proporcional del .fig. Paso a grid con % exactos sobre
+  // los 689px de contenido: heading 223px (32.4%), gap 68px (9.9%),
+  // direccion 398px (57.8%).
+  @include tablet {
+    display: grid;
+    grid-template-columns: 32.4% 57.8%;
+    column-gap: 9.9%;
+  }
+
+  // en desktop uso % en vez de rem: el .container es fluido (crece en
+  // pantallas grandes), asi que un gap fijo en rem se desproporciona.
+  // Valores exactos del .fig sobre 1110px de ancho: heading 350px (31.5%),
+  // gap 220px (19.8%), direccion 445px (40.1%).
+  @include desktop {
+    display: grid;
+    grid-template-columns: 31.5% 40.1%;
+    column-gap: 19.8%;
+  }
+
+  // "OUR LOCATION" va en 1 sola linea en tablet Y desktop (solo envuelve
+  // en mobile, donde la columna es mas angosta).
+  @include tablet {
+    h1 {
+      white-space: nowrap;
+    }
+  }
+}
+
+.address__details {
+  // valor exacto del .fig (Mobile - Location): 48px de gap entre el heading
+  // "OUR LOCATION" y este bloque (no 32px).
+  margin-top: 3rem;
+
+  @include tablet {
+    margin-top: 0.5rem;
+  }
+
+  // .body-text define su propio color:$gray, que pisa el color:$white
+  // heredado de .address (una declaracion directa en el elemento siempre
+  // gana sobre un valor heredado). En el .fig este texto es blanco en las
+  // 3 resoluciones, no gris -- aplica a mobile, tablet y desktop.
+  .body-text {
+    color: $white;
+
+    // un poco mas grande en tablet/desktop -- se veia chico y sin usar
+    // todo el ancho de su columna.
+    @include tablet {
+      font-size: 1.25rem;
+    }
+  }
+}
+
+.address__street {
+  color: $terracotta;
+}
+
+.address__lines {
+  margin-top: 1rem;
+}
+
+.address__details p.body-text + p.body-text {
+  margin-top: 1.5rem;
+  max-width: 30rem;
+}

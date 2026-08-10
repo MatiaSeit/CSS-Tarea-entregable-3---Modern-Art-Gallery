@@ -1,0 +1,64 @@
+// ====== Botones de dos bloques (texto + icono) con estado hover que invierte colores ======
+.btn {
+  display: inline-flex;
+  align-items: stretch;
+  font-family: $font-heading;
+  font-weight: 900;
+  font-size: 0.875rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  border: none;
+}
+
+.btn__label {
+  display: flex;
+  align-items: center;
+  // valor exacto del .fig (confirmado igual en mobile/tablet/desktop: el
+  // boton completo mide 264x72px): 24px vertical / 32px horizontal, no
+  // 16px/24px -- con el padding viejo el boton quedaba a ~49px de alto
+  // en vez de 72px, se veia chico en todas las resoluciones.
+  padding: 1.5rem 2rem;
+  background-color: $black;
+  color: $white;
+  white-space: nowrap;
+  transition: background-color $transition;
+}
+
+.btn__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  // valor exacto del .fig: 56px, no 52px (3.25rem).
+  width: 3.5rem;
+  background-color: $terracotta;
+  transition: background-color $transition;
+
+  img {
+    width: 0.5rem;
+    height: auto;
+    // el SVG viene con stroke blanco; en reposo el fondo es terracota,
+    // así que se invierte para que se vea oscuro
+    filter: invert(1);
+    transition: filter $transition;
+  }
+}
+
+.btn:hover {
+  .btn__label {
+    background-color: $terracotta;
+  }
+
+  .btn__icon {
+    background-color: $black;
+
+    img {
+      filter: none;
+    }
+  }
+}
+
+// "Back to home": icono (flecha izq.) primero, texto después
+.btn--back {
+  flex-direction: row-reverse;
+}

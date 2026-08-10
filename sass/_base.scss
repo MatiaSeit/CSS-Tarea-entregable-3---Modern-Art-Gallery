@@ -1,0 +1,142 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background-color: $white;
+  font-family: $font-body;
+  font-weight: 300;
+  color: $black;
+  // sin esto, el texto blanco/fino (el body-text de peso 300, sobre todo)
+  // sobre fondos negros se ve con un "fleco" de color en los bordes de
+  // las letras -- es el antialiasing subpixel (LCD) del navegador. Esto
+  // fuerza antialiasing en escala de grises, que es lo que se ve en el
+  // .fig (renderizado por Figma, no por un navegador).
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+.heading {
+  font-family: $font-heading;
+  font-weight: 900;
+  text-transform: uppercase;
+  line-height: 0.92;
+}
+
+// tamaños del sistema de diseño, mobile-first (se reducen en pantallas chicas)
+// valor de mobile recalculado a partir de la caja de texto real del .fig
+// (Mobile - Home): "MODERN\nART GALLERY" mide 343x110px a line-height:0.92,
+// eso da ~59.8px, no 44px -- 2.75rem se quedaba corto.
+.heading--xl {
+  font-size: 3.75rem; // ~60px en mobile (antes 2.75rem/44px, muy chico)
+  // verificado con el webfont real: "MODERN\nART GALLERY" en 339px de
+  // ancho necesita ~70px (4.375rem) para dar 130px de alto, el valor
+  // exacto del .fig (Tablet - Home) -- 4rem/64px quedaba corto.
+  @include tablet { font-size: 4.375rem; }
+  // verificado renderizando el webfont real: "MODERN\nART GALLERY" en una
+  // caja de 514px de ancho necesita 96px (6rem) para dar 176px de alto,
+  // que es el valor exacto del .fig (Desktop - Home) -- 4.375rem/70px
+  // quedaba muy chico.
+  @include desktop { font-size: 6rem; }
+}
+
+// idem: "Your Day\nat the Gallery" / "Come & Be Inspired" miden 90px de alto
+// a 2 lineas en el .fig mobile, eso da ~48.9px, no 32px.
+.heading--m {
+  // fontSize directo del nodo de texto en el .fig (Mobile - Home): 50.0px,
+  // no 48px -- lineHeight tambien es distinto del resto de los headings:
+  // 45px explicitos (ratio 0.9), no el 0.92 global de .heading, pero la
+  // diferencia es minima (46 vs 45px) asi que no hace falta un override aca.
+  font-size: 3.125rem; // 50px
+  // fontSize directo del nodo (Tablet - Home): tambien 50.0px, igual que
+  // mobile -- no cambia en este breakpoint.
+  @include tablet { font-size: 3.125rem; }
+  // fontSize directo del nodo (Desktop - Home): 60.0px, no 64px. Ademas
+  // aca el lineHeight explicito es 60px (ratio 1.0, no 0.92) -- con el
+  // 0.92 global quedaba en 55.2px, mas apretado de lo debido.
+  @include desktop {
+    font-size: 3.75rem; // 60px
+    line-height: 1;
+  }
+}
+
+.heading--s {
+  font-size: 1.5rem; // 24px
+  @include desktop { font-size: 2.25rem; } // 36px (Heading S)
+}
+
+.body-text {
+  font-family: $font-body;
+  font-weight: 300;
+  // el .fig usa el mismo tamaño de body-text en mobile y desktop (verificado
+  // con la caja del parrafo del hero: 343x112px en mobile Y 339x112px en
+  // tablet dan el mismo alto de linea) -- 1rem se quedaba corto y hacia que
+  // el texto pareciera "chico" y que algunos parrafos envolvieran en menos
+  // lineas de las que deberian (ej: el del footer, 3 en vez de 4).
+  font-size: 1.125rem; // 18px
+  line-height: 1.56;
+  color: $gray;
+
+  @include desktop {
+    font-size: 1.125rem; // 18px (Body S)
+    line-height: 1.56;
+  }
+}
+
+.body-text--m {
+  @extend .body-text;
+
+  @include desktop {
+    font-size: 1.375rem; // 22px (Body M)
+    line-height: 1.45;
+  }
+}
+
+.container {
+  width: 100%;
+  margin: 0 auto;
+  // valor exacto del .fig: 16px de margen en mobile (no 24px).
+  padding: 0 1rem;
+
+  @include tablet {
+    padding: 0 2.5rem;
+  }
+
+  @include desktop {
+    // fluido: crece con la ventana en vez de quedar congelado, pero con
+    // un techo generoso para que las lineas de texto no queden demasiado
+    // largas en monitores ultra anchos (32"/40"+).
+    max-width: min(1800px, 88vw);
+    padding: 0 5rem;
+  }
+}

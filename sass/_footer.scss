@@ -1,0 +1,91 @@
+// ====== Footer ======
+.site-footer {
+  background-color: $black;
+  color: $white;
+  padding: 2.5rem 0;
+
+  @include desktop {
+    padding: 3.5rem 0;
+  }
+}
+
+.site-footer--accent {
+  background-color: $terracotta;
+  color: $black;
+}
+
+.site-footer__inner {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  // valor exacto del .fig: el footer usa 32px de margen en mobile, no los
+  // 16px del resto de las secciones (el .container normal no aplica aca).
+  padding: 0 2rem;
+
+  @include tablet {
+    flex-direction: row;
+    // el .fig alinea el contenido arriba del bloque, no centrado
+    // verticalmente.
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 2rem;
+    padding: 0 2.5rem; // igual que el .container en tablet
+  }
+
+  @include desktop {
+    padding: 0 5rem; // igual que el .container en desktop
+  }
+}
+
+// logo + texto van agrupados y pegados entre si (el gap grande del .fig
+// es contra los iconos sociales, no contra el logo).
+.site-footer__brand {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  @include tablet {
+    flex-direction: row;
+    align-items: center;
+    gap: 4.06rem;
+  }
+
+  @include desktop {
+    gap: 8.78rem;
+  }
+}
+
+.site-footer__text {
+  max-width: 26rem;
+  color: inherit;
+  opacity: 0.85;
+
+  // en tablet el .fig envuelve este parrafo en 3 lineas, no 4 -- le doy
+  // mas ancho para que no se apriete tanto.
+  @include tablet {
+    max-width: 32rem;
+  }
+}
+
+.site-footer--accent .site-footer__text {
+  color: $black;
+}
+
+.social {
+  display: flex;
+  gap: 1.25rem;
+
+  img {
+    width: 1.25rem;
+    height: 1.25rem;
+    transition: opacity $transition;
+  }
+
+  a:hover img {
+    opacity: 0.6;
+  }
+}
+
+.site-footer--accent .social img {
+  filter: brightness(0); // los iconos vienen en blanco; en el footer terracota se ven en negro
+}

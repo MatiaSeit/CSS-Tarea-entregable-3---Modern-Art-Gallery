@@ -1,0 +1,152 @@
+// ====== Hero (portada) ======
+// Mobile/tablet: foto arriba (o a la izquierda), titulo + texto + boton juntos.
+// Desktop: se separa en 3 columnas -> bloque negro con titulo | foto | texto+boton.
+.hero {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-areas:
+    "media"
+    "heading"
+    "body";
+
+  @include tablet {
+    // 437/768 = ancho real de la foto en el .fig (no 45%).
+    grid-template-columns: 56.9% 43.1%;
+    // la foto (media) abarca las 2 filas y es mas alta que heading+body
+    // juntos; si ambas filas fueran "auto" la grilla infla la fila del
+    // heading para repartir esa altura extra, dejando un hueco enorme
+    // entre el titulo y el parrafo. Con min-content en la 1ra fila, el
+    // heading se queda con su alto real y el sobrante cae debajo del
+    // body (que es donde el .fig lo deja).
+    grid-template-rows: min-content auto;
+    grid-template-areas:
+      "media heading"
+      "media body";
+    align-items: stretch;
+  }
+
+  @include desktop {
+    grid-template-columns: 31% 38% 31%;
+    grid-template-areas: "heading media body";
+    // sin esto, en monitores anchos (1920px+) las columnas (foto, texto)
+    // crecen linealmente con el viewport y todo -especialmente la foto-
+    // termina desproporcionadamente grande frente al resto de la pagina,
+    // que si esta topeada por .container. OJO: a diferencia de .container,
+    // uso max(1440px, ...) para que NUNCA se achique por debajo del ancho
+    // de referencia del .fig (el hero no tiene padding propio como
+    // .container que compense ese achique), y SIN margin:auto -- en el
+    // .fig el bloque negro va pegado al borde izquierdo, el espacio de
+    // sobra queda solo del lado derecho.
+    max-width: max(1440px, min(1800px, 88vw));
+  }
+}
+
+.hero__heading {
+  grid-area: heading;
+  // valor exacto del .fig: 16px de margen (no 24px).
+  padding: 2rem 1rem 0;
+
+  @include tablet {
+    // el texto arranca 48px ANTES de que termine la foto (mismo patron
+    // de superposicion que desktop), por eso el margin-left negativo y
+    // el padding-left en 0. padding-top ubica el texto a 145px exactos
+    // del borde superior del hero.
+    padding: 9.0625rem 2.5rem 0 0;
+    margin-left: -3rem;
+    position: relative;
+    z-index: 1;
+    align-self: stretch;
+  }
+
+  @include desktop {
+    align-self: stretch;
+    // valor exacto sacado del .fig: el titulo arranca a 165px del borde
+    // (10.3125rem) y a 190px del top (no centrado, mas arriba).
+    padding: 11.875rem 3rem 0 10.3125rem;
+    // @include tablet usa min-width:768px, asi que su margin-left:-3rem
+    // (pensado para superponer el texto sobre la foto en tablet) tambien
+    // se aplicaba aca sin querer, corriendo el titulo 48px de mas hacia
+    // la izquierda -- lo reseteo explicitamente.
+    margin-left: 0;
+    position: static;
+    display: flex;
+    align-items: flex-start;
+    background-color: $black;
+
+    .heading {
+      color: $white;
+    }
+  }
+}
+
+.hero__media {
+  grid-area: media;
+  width: 100%;
+  // aspect-ratio real de cada foto para que crezca de forma proporcional
+  // con el ancho de la ventana en vez de quedar fija a partir de 1440px.
+  aspect-ratio: 750 / 480;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  @include tablet {
+    // valor exacto del .fig (Tablet - Home): la foto mide 437x700, no
+    // 1000x1481 -- con el ratio viejo quedaba mas baja de lo debido y
+    // el boton de "Our Location" no coincidia con la linea del piso
+    // de la foto.
+    aspect-ratio: 437 / 700;
+    background-color: $black;
+  }
+}
+
+.hero__body {
+  grid-area: body;
+  // valor exacto del .fig: 16px de margen (no 24px), gap foto/texto 32px.
+  padding: 2rem 1rem 3rem;
+
+  @include tablet {
+    // 3rem = gap exacto entre el final del heading y el parrafo. Mismo
+    // desplazamiento horizontal que el heading para que ambos queden
+    // alineados sobre el borde de la foto.
+    padding: 3rem 2.5rem 3rem 0;
+    margin-left: -3rem;
+    position: relative;
+    z-index: 1;
+    align-self: start;
+  }
+
+  @include desktop {
+    align-self: stretch;
+    // mismo top que el heading (190px) en vez de centrado verticalmente.
+    // margin-left negativo: en el .fig el texto/boton arranca 65px ANTES
+    // de que termine la foto (se superponen), no 100% sobre el blanco.
+    padding: 11.875rem 3rem 4rem;
+    margin-left: -7.0625rem;
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+}
+
+.hero__text {
+  max-width: 32rem;
+}
+
+.hero__body .btn {
+  margin-top: 2rem;
+
+  // valores exactos del .fig: 48px en tablet, 64px en desktop.
+  @include tablet {
+    margin-top: 3rem;
+  }
+
+  @include desktop {
+    margin-top: 4rem;
+  }
+}

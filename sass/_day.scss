@@ -1,0 +1,160 @@
+// ====== "Your Day at the Gallery" + collage + "Come & Be Inspired" ======
+.day {
+  // valor exacto del .fig (Mobile - Home): el espacio entre el fondo negro
+  // de "Come & Be Inspired" y el fondo del footer es 120px (7.5rem). Ese
+  // gap es puramente el padding-bottom de esta seccion -- el padding-top
+  // del footer es espacio INTERNO suyo (entre su fondo y su contenido),
+  // no se suma al hueco entre secciones.
+  padding: 3.5rem 0 7.5rem;
+
+  @include tablet {
+    padding: 5rem 0;
+  }
+
+  @include desktop {
+    padding: 6rem 0;
+  }
+}
+
+.day__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+
+  img {
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    display: block;
+  }
+}
+
+// en mobile el .fig muestra la foto grande PRIMERO, antes del texto "Your
+// Day at the Gallery" (el HTML la tiene despues). En tablet/desktop no
+// afecta porque ahi cada item ya tiene su grid-column/grid-row explicito.
+.day__photo--big {
+  order: -1;
+}
+
+@include tablet {
+  .day__grid img {
+    aspect-ratio: auto;
+  }
+}
+
+.day__intro {
+  // en mobile el .fig tiene un salto de linea manual despues de "Day"
+  // ("Your Day" / "at the Gallery"); en tablet/desktop el texto es una
+  // sola cadena que envuelve solo segun el ancho de su columna, asi que
+  // ese salto manual hay que ocultarlo ahi para no forzar una linea de mas.
+  .day__break {
+    @include tablet {
+      display: none;
+    }
+  }
+
+  p {
+    margin-top: 1rem;
+    max-width: 22rem;
+  }
+
+  // en su celda del grid (tablet/desktop) el .fig lo centra verticalmente,
+  // no lo deja pegado arriba. Ademas, uso % en vez de rem para el ancho
+  // del texto: la celda del grid es fluida (crece con el viewport dentro
+  // del rango tablet/desktop), asi que un max-width fijo en rem se queda
+  // atras a medida que la ventana crece -- el texto se ve cada vez mas
+  // angosto/apretado relativo a su caja. 223/398=56% en tablet, 350/635
+  // =55.1% en desktop -- practicamente el mismo %, uso 56% para ambos.
+  @include tablet {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    h2, p {
+      max-width: 56%;
+    }
+  }
+}
+
+.day__inspire {
+  background-color: $black;
+  color: $white;
+  // valor exacto del .fig (Mobile - Home, Group6/Group5): 48px arriba/abajo,
+  // no 32px -- quedaba mas apretado de lo debido.
+  padding: 3rem 1.5rem;
+
+  p {
+    // gap exacto del .fig entre el heading y el parrafo: 24px, no 16px.
+    margin-top: 1.5rem;
+    max-width: 20rem;
+    // el .fig tiene este texto en blanco 100% opaco (fill alpha:1), no
+    // al 75% -- se veia mas apagado/gris de lo debido.
+    color: $white;
+  }
+
+  // mismo caso que .day__intro, tambien en %: 223/280=79.6% en tablet,
+  // 350/445=78.6% en desktop -- uso 79% para ambos.
+  @include tablet {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    h2, p {
+      max-width: 79%;
+    }
+  }
+}
+
+@include tablet {
+  .day__grid {
+    // ratio exacto del .fig: columna izquierda (398px) mas ancha que la
+    // derecha (280px), no 50/50 como estaba antes.
+    grid-template-columns: 398fr 280fr;
+    grid-template-rows: auto auto;
+    gap: 1.5rem;
+  }
+
+  .day__intro {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .day__photo--big {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .day__photo--bench {
+    grid-column: 1;
+    grid-row: 2 / span 2;
+  }
+
+  .day__photo--wood {
+    grid-column: 2;
+    grid-row: 2;
+  }
+
+  .day__inspire {
+    grid-column: 2;
+    grid-row: 3;
+    // valor exacto del .fig (Tablet - Home): 85px arriba/abajo, 29px a
+    // los costados -- no 40px parejo.
+    padding: 5.3125rem 1.8125rem;
+  }
+}
+
+@include desktop {
+  .day__grid {
+    // ratio exacto del .fig: columna izquierda (635px) mas ancha que la
+    // derecha (445px) -- estaba invertido antes.
+    grid-template-columns: 635fr 445fr;
+    gap: 2rem;
+  }
+
+  .day__inspire {
+    // valor exacto del .fig (Desktop - Home): 64px arriba/abajo, 48px a
+    // los costados -- no 48px parejo.
+    padding: 4rem 3rem;
+  }
+}
