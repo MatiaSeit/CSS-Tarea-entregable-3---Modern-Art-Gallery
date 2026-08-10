@@ -1,3 +1,4 @@
 design-reference/
+*.fig
 .DS_Store
 Thumbs.db
