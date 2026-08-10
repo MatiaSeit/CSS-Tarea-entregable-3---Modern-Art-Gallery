@@ -1,7 +1,4 @@
-Tercera tarea entregable de CSS. En esta ocasión, desarrollaremos un mini-site de dos vistas con responsive para una web de Modern Art Gallery. A continuación, os dejo los requerimientos y el proceso de entrega.
-
-Archivos necesarios para la realización. Es un fichero figma que podrás importar en tu propia cuenta.
-
+Tercera tarea entregable de CSS. 
 📌 Requerimientos
 ✅ Boilerplate: Podéis elegir el que prefiráis como punto de partida.
 ✅ Uso de SASS: No es obligatorio, pero lo recomiendo para mejorar la organización del código.
